@@ -16,7 +16,7 @@ Clint is written using the Qt C++ toolkit, and works with Windows, Linux, and OS
 
 Note to Mac users:
 
-I order to prevent the application from showing in the dock, add the following to the Info.plist file in the application
+In order to prevent the application from showing in the dock, add the following to the Info.plist file in the application
 bundle:
 
 <key>LSUIElement</key>
