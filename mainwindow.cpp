@@ -4,8 +4,9 @@
 #include <QtGui/QClipboard>
 #include <QMimeData>
 #include <QCloseEvent>
-//#include <QDebug>
+#include <QDebug>
 #include <QSettings>
+#include <QTimer>
 
 
 MainWindow::MainWindow(unsigned short p, QWidget *parent) :
@@ -16,8 +17,16 @@ MainWindow::MainWindow(unsigned short p, QWidget *parent) :
 {
     ui->setupUi(this);
 
-    connect(qApp->clipboard(), SIGNAL(dataChanged()), this, SLOT(clipboardChanged()));
+    // busted in Qt5
+    //connect(QApplication::clipboard(), SIGNAL(changed(QClipboard::Mode)), this, SLOT(clipboardChanged()));
     connect(ui->listWidget, SIGNAL(clicked(QModelIndex)), this, SLOT(textActivated()));
+
+    currentText = QApplication::clipboard()->text();
+
+    QTimer *timer = new QTimer(this);
+    timer->setInterval(200);
+    connect(timer, SIGNAL(timeout()), this, SLOT(pollClipboard()));
+    timer->start();
 
     socket = new QUdpSocket(this);
     socket->bind(QHostAddress::Any, port);
@@ -38,8 +47,10 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::sysTrayActivate(QSystemTrayIcon::ActivationReason reason) {
-    if(reason == QSystemTrayIcon::Context) qApp->quit();
-    else {
+    qDebug() << "Activate reason:" << reason;
+    if(reason == QSystemTrayIcon::Context || reason == QSystemTrayIcon::DoubleClick) {
+        qApp->quit();
+    } else {
         show();
         raise();
         activateWindow();
@@ -67,6 +78,7 @@ void MainWindow::addText(const QString &text) {
 }
 
 void MainWindow::clipboardChanged() {
+    qDebug() << "Clipboard changed";
     if(qApp->clipboard()->mimeData()->hasText()) {
         addText(qApp->clipboard()->mimeData()->text());
     }
@@ -98,3 +110,12 @@ void MainWindow::readDatagrams() {
         qApp->clipboard()->setText(QString::fromUtf8(datagram.data()));
     }
 }
+
+void MainWindow::pollClipboard()
+{
+    if(QApplication::clipboard()->text() != currentText) {
+        currentText = QApplication::clipboard()->text();
+        clipboardChanged();
+    }
+}
+

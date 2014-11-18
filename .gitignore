@@ -9,3 +9,4 @@ qrc_*.cpp
 ui_*.h
 Makefile
 Clint.app/*
+.qmake.stash

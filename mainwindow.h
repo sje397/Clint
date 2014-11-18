@@ -1,8 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include <QMainWindow>
-#include <QSystemTrayIcon>
+#include <QtWidgets/QMainWindow>
+#include <QtWidgets/QSystemTrayIcon>
 #include <QUdpSocket>
 
 namespace Ui {
@@ -27,11 +27,14 @@ private slots:
     void textActivated();
     void readDatagrams();
 
+    void pollClipboard();
+
 private:
     Ui::MainWindow *ui;
     QUdpSocket *socket;
     unsigned short port;
     QList<QHostAddress> nodes;
+    QString currentText;
 
     void closeEvent(QCloseEvent *e);
 };
