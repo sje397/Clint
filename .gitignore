@@ -10,3 +10,4 @@ ui_*.h
 Makefile
 Clint.app/*
 .qmake.stash
+Clint.pro.user*

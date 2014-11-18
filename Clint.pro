@@ -13,6 +13,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp
 
+QMAKE_INFO_PLIST=Info.plist
+
 HEADERS  += mainwindow.h
 
 FORMS    += mainwindow.ui

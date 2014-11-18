@@ -14,12 +14,3 @@ connected nodes must use the same port. The messages are sent over UDP.
 
 Clint is written using the Qt C++ toolkit, and works with Windows, Linux, and OSX.
 
-Note to Mac users:
-
-In order to prevent the application from showing in the dock, add the following to the Info.plist file in the application
-bundle:
-
-<key>LSUIElement</key>
-<string>1</string>
-
-
